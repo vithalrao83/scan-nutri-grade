@@ -15,7 +15,11 @@ export const simulateScan = (): Promise<string> => {
         "8906002730402",
         "8902102153847",
         "8902519005394",
-        "8901725133566"
+        "8901725133566",
+        "8901030794310",  // New product
+        "8901063014456",  // New product
+        "8901347082254",  // New product
+        "8901595853792"   // New product
       ];
       
       const randomBarcode = sampleBarcodes[Math.floor(Math.random() * sampleBarcodes.length)];
@@ -150,7 +154,7 @@ const productDatabase: Record<string, any> = {
   "8901725133566": {
     name: "Toxic Cleaner (DEMO)",
     brand: "Demo Brand",
-    image: "",
+    image: "https://m.media-amazon.com/images/I/61HG4B+uKrL.jpg",
     ingredients: [
       { 
         name: "Water", 
@@ -171,6 +175,155 @@ const productDatabase: Record<string, any> = {
         sources: ["CDC Toxicity Database", "NIH Poison Control"]
       }
     ]
+  },
+  // New products
+  "8901030794310": {
+    name: "Tata Tea Premium",
+    brand: "Tata",
+    image: "https://m.media-amazon.com/images/I/71IVgwKFdRL.jpg",
+    ingredients: [
+      { 
+        name: "Tea Leaves", 
+        grade: "A", 
+        reason: "Natural plant-based ingredient with antioxidant properties.",
+        sources: ["National Institutes of Health", "Tea Research Association"]
+      },
+      { 
+        name: "Natural Flavors", 
+        grade: "B", 
+        reason: "Generally derived from natural sources but may undergo processing.",
+        sources: ["FDA GRAS List", "Journal of Food Science"]
+      }
+    ]
+  },
+  "8901063014456": {
+    name: "MDH Garam Masala",
+    brand: "MDH",
+    image: "https://m.media-amazon.com/images/I/71X9qnZXpqL.jpg",
+    ingredients: [
+      { 
+        name: "Coriander", 
+        grade: "A", 
+        reason: "Natural spice with health benefits including anti-inflammatory properties.",
+        sources: ["Journal of Medicinal Food", "USDA"]
+      },
+      { 
+        name: "Cumin", 
+        grade: "A", 
+        reason: "Natural spice with digestive benefits.",
+        sources: ["International Journal of Food Science"]
+      },
+      { 
+        name: "Black Pepper", 
+        grade: "A", 
+        reason: "Natural spice with bioactive compounds beneficial for health.",
+        sources: ["Critical Reviews in Food Science and Nutrition"]
+      },
+      { 
+        name: "Cinnamon", 
+        grade: "A", 
+        reason: "Natural spice with antioxidant properties.",
+        sources: ["BMC Complementary Medicine and Therapies"]
+      },
+      { 
+        name: "Cloves", 
+        grade: "A", 
+        reason: "Natural spice with antimicrobial properties.",
+        sources: ["Evidence-Based Complementary and Alternative Medicine"]
+      },
+      { 
+        name: "Cardamom", 
+        grade: "A", 
+        reason: "Natural spice with digestive benefits.",
+        sources: ["Journal of Ethnopharmacology"]
+      }
+    ]
+  },
+  "8901347082254": {
+    name: "Britannia Good Day Cookies",
+    brand: "Britannia",
+    image: "https://m.media-amazon.com/images/I/81GKCz6gzDL.jpg",
+    ingredients: [
+      { 
+        name: "Wheat Flour", 
+        grade: "A", 
+        reason: "Natural grain ingredient, minimally processed.",
+        sources: ["Food Standards Agency", "WHO Guidelines"]
+      },
+      { 
+        name: "Sugar", 
+        grade: "C", 
+        reason: "Refined sugar has been linked to various health issues when consumed in excess.",
+        sources: ["WHO Sugar Guidelines 2023"]
+      },
+      { 
+        name: "Vegetable Oil", 
+        grade: "B", 
+        reason: "Processed but generally safe in moderation.",
+        sources: ["American Heart Association"]
+      },
+      { 
+        name: "Butter", 
+        grade: "B", 
+        reason: "Natural dairy product but high in saturated fat.",
+        sources: ["Harvard School of Public Health"]
+      },
+      { 
+        name: "Cashew Nuts", 
+        grade: "A", 
+        reason: "Natural food with healthy fats and protein.",
+        sources: ["Nutrition Journal"]
+      },
+      { 
+        name: "Artificial Flavors", 
+        grade: "D", 
+        reason: "Synthetic compounds that may have long-term health impacts.",
+        sources: ["Environmental Working Group", "NIH Study 2022"]
+      },
+      { 
+        name: "Preservatives", 
+        grade: "C", 
+        reason: "Chemical additives that may have negative health effects in some individuals.",
+        sources: ["Journal of Food Science and Technology"]
+      }
+    ]
+  },
+  "8901595853792": {
+    name: "Haldiram's Soan Papdi",
+    brand: "Haldiram's",
+    image: "https://m.media-amazon.com/images/I/61xKKfC4yHL.jpg",
+    ingredients: [
+      { 
+        name: "Sugar", 
+        grade: "C", 
+        reason: "Refined sugar has been linked to various health issues when consumed in excess.",
+        sources: ["WHO Sugar Guidelines 2023", "American Heart Association"]
+      },
+      { 
+        name: "Gram Flour", 
+        grade: "A", 
+        reason: "Natural pulse flour with protein and fiber.",
+        sources: ["Journal of Food Science and Technology"]
+      },
+      { 
+        name: "Wheat Flour", 
+        grade: "A", 
+        reason: "Natural grain ingredient, minimally processed.",
+        sources: ["Food Standards Agency"]
+      },
+      { 
+        name: "Ghee", 
+        grade: "B", 
+        reason: "Traditional clarified butter, natural but high in saturated fat.",
+        sources: ["Journal of Nutrition Research"]
+      },
+      { 
+        name: "Cardamom", 
+        grade: "A", 
+        reason: "Natural spice with digestive benefits.",
+        sources: ["Journal of Ethnopharmacology"]
+      }
+    ]
   }
 };
 
@@ -187,7 +340,7 @@ export const getProductInfo = async (barcode: string): Promise<any> => {
         resolve({
           name: "Generic Product",
           brand: "Unknown Brand",
-          image: "",
+          image: "https://m.media-amazon.com/images/I/61gScZJNhoL.jpg", // Default image
           ingredients: [
             { 
               name: "Ingredient 1", 
@@ -213,3 +366,19 @@ export const getProductInfo = async (barcode: string): Promise<any> => {
     }, 1500);
   });
 };
+
+// This function could be expanded for a real-world application
+// to integrate with actual product databases like Open Food Facts
+// export const fetchProductFromAPI = async (barcode: string): Promise<any> => {
+//   try {
+//     const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+//     if (!response.ok) {
+//       throw new Error('Product not found');
+//     }
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error('Error fetching product data:', error);
+//     throw error;
+//   }
+// };

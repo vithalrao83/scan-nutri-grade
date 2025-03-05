@@ -4,7 +4,7 @@ import { Camera, CameraOff, Flashlight, RotateCcw, X, Barcode as BarcodeIcon, Ed
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { simulateScan, getProductInfo } from "@/utils/scannerUtils";
+import { simulateScan } from "@/utils/scannerUtils";
 import { toast } from "sonner";
 
 export default function Scanner() {
@@ -48,7 +48,7 @@ export default function Scanner() {
         videoRef.current.play();
       }
       
-      // For demo, simulate a successful scan after a few seconds
+      // For demo, simulate a successful scan after a few seconds (reduced from 5s to 3s)
       setTimeout(() => {
         simulateScan()
           .then(barcode => {
@@ -62,7 +62,7 @@ export default function Scanner() {
             stopScanning();
             toast.error("Failed to scan barcode. Please try again or enter manually.");
           });
-      }, 5000);
+      }, 3000); // Reduced time for better user experience
       
     } catch (error) {
       console.error("Error accessing camera:", error);
@@ -83,21 +83,34 @@ export default function Scanner() {
     setFlashlightOn(false);
   }, []);
   
-  // Toggle flashlight (Note: this is a simulation as the Web API doesn't fully support flashlight control)
+  // Toggle flashlight
   const toggleFlashlight = useCallback(() => {
     setFlashlightOn(prev => !prev);
     // In a real implementation, you would use:
     // const track = streamRef.current?.getVideoTracks()[0];
-    // track?.applyConstraints({ advanced: [{ torch: !flashlightOn }] });
+    // if (track?.getCapabilities()?.torch) {
+    //   track.applyConstraints({ advanced: [{ torch: !flashlightOn }] });
+    // }
   }, []);
   
   // Handle manual barcode entry
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (barcodeValue.trim().length > 0) {
+      toast.success("Barcode submitted");
       handleScanComplete(barcodeValue);
+    } else {
+      toast.error("Please enter a valid barcode");
     }
   };
+
+  // Quick access to demo products
+  const demoProducts = [
+    { barcode: "8901072000128", name: "Parle-G" },
+    { barcode: "8902102153847", name: "Maggi" },
+    { barcode: "8906002730402", name: "Amul Butter" },
+    { barcode: "8901030794310", name: "Tata Tea" }
+  ];
   
   // Clean up on unmount
   useEffect(() => {
@@ -237,10 +250,28 @@ export default function Scanner() {
             </>
           )}
           
+          {/* Demo Products */}
+          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 w-full">
+            <p className="text-xs font-medium mb-2 text-center">Quick Demo Products:</p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {demoProducts.map(product => (
+                <Button
+                  key={product.barcode}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs rounded-full"
+                  onClick={() => handleScanComplete(product.barcode)}
+                >
+                  {product.name}
+                </Button>
+              ))}
+            </div>
+          </div>
+          
           {/* Demo Note */}
           <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 w-full">
             <p className="text-xs text-center text-muted-foreground">
-              <span className="font-semibold">Demo Mode:</span> The scanner will simulate a successful scan after 5 seconds
+              <span className="font-semibold">Demo Mode:</span> The scanner will simulate a successful scan after 3 seconds
             </p>
           </div>
         </div>
