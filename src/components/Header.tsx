@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
+import Logo from "./Logo";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,10 +41,9 @@ export default function Header() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         <Link 
           to="/" 
-          className="text-2xl font-semibold tracking-tight flex items-center gap-2 transition-transform hover:scale-[1.01]"
+          className="transition-transform hover:scale-[1.01]"
         >
-          <span className="text-primary text-3xl">Nutri</span>
-          <span className="text-foreground text-3xl">grade</span>
+          <Logo size={scrolled ? "sm" : "md"} />
         </Link>
         
         {/* Desktop Navigation */}

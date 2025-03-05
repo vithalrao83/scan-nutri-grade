@@ -4,27 +4,24 @@ import { Camera, CameraOff, Flashlight, RotateCcw, X, Barcode as BarcodeIcon, Ed
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { simulateScan } from "@/utils/scannerUtils";
+import { simulateScan, getProductInfo } from "@/utils/scannerUtils";
+import { toast } from "sonner";
 
 export default function Scanner() {
   const [isScanning, setIsScanning] = useState(false);
   const [flashlightOn, setFlashlightOn] = useState(false);
-  const [timeoutActive, setTimeoutActive] = useState(false);
   const [manualEntry, setManualEntry] = useState(false);
   const [barcodeValue, setBarcodeValue] = useState("");
   const [scanError, setScanError] = useState(false);
-  const [countdown, setCountdown] = useState(120); // 2 minutes in seconds
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
   const navigate = useNavigate();
   
   const handleScanComplete = useCallback((barcode: string) => {
     stopScanning();
-    // For demo purposes, we'll navigate to a results page with a simulated barcode
+    toast.success("Barcode scanned successfully");
     navigate(`/results/${barcode}`);
   }, [navigate]);
   
@@ -33,8 +30,6 @@ export default function Scanner() {
     try {
       setScanError(false);
       setIsScanning(true);
-      setTimeoutActive(true);
-      setCountdown(120);
       
       // Request camera access
       const constraints = {
@@ -53,31 +48,27 @@ export default function Scanner() {
         videoRef.current.play();
       }
       
-      // Set timeout for 2 minutes
-      timerRef.current = setTimeout(() => {
-        setTimeoutActive(false);
-        setScanError(true);
-        stopScanning();
-      }, 120000);
-      
-      // Update countdown every second
-      intervalRef.current = setInterval(() => {
-        setCountdown(prev => prev - 1);
-      }, 1000);
-      
       // For demo, simulate a successful scan after a few seconds
       setTimeout(() => {
-        simulateScan().then(barcode => {
-          if (barcode) {
-            handleScanComplete(barcode);
-          }
-        });
+        simulateScan()
+          .then(barcode => {
+            if (barcode) {
+              handleScanComplete(barcode);
+            }
+          })
+          .catch(error => {
+            console.error("Scan error:", error);
+            setScanError(true);
+            stopScanning();
+            toast.error("Failed to scan barcode. Please try again or enter manually.");
+          });
       }, 5000);
       
     } catch (error) {
       console.error("Error accessing camera:", error);
       setScanError(true);
       setIsScanning(false);
+      toast.error("Could not access camera. Please check permissions.");
     }
   }, [handleScanComplete]);
   
@@ -88,18 +79,7 @@ export default function Scanner() {
       streamRef.current = null;
     }
     
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-    
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    
     setIsScanning(false);
-    setTimeoutActive(false);
     setFlashlightOn(false);
   }, []);
   
@@ -194,25 +174,11 @@ export default function Scanner() {
                 )}
               </div>
               
-              {/* Timer & Error Message */}
-              {timeoutActive && (
-                <div className="w-full mb-4">
-                  <div className="w-full h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary transition-all duration-1000"
-                      style={{ width: `${(countdown / 120) * 100}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-center text-sm text-gray-500 mt-2">
-                    {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')} remaining
-                  </p>
-                </div>
-              )}
-              
+              {/* Error Message */}
               {scanError && (
                 <div className="w-full mb-4 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-lg text-center">
                   <p className="text-red-600 dark:text-red-400 text-sm font-medium">
-                    Scan timed out. Please try again or enter barcode manually.
+                    Scan failed. Please try again or enter barcode manually.
                   </p>
                 </div>
               )}

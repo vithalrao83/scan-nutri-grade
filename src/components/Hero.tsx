@@ -15,7 +15,7 @@ export default function Hero() {
           Introducing Nutrigrade
         </div>
         
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance leading-tight mb-6 animate-slide-up [animation-delay:100ms]">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance leading-tight mb-6 animate-slide-up [animation-delay:100ms] shadow-none">
           Know your food's{" "}
           <span className="text-primary inline-block relative">
             safety score
@@ -54,13 +54,21 @@ export default function Hero() {
         </div>
       </div>
       
-      <div className="mt-24 w-full max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 animate-slide-up [animation-delay:400ms]">
+      <div className="mt-24 w-full max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 animate-slide-up [animation-delay:400ms]">
         <div className="glass rounded-xl p-6 flex flex-col items-center text-center shadow-lg dark:shadow-none transition-transform hover:scale-[1.02] duration-300">
           <div className="w-12 h-12 rounded-full bg-grade-a/10 flex items-center justify-center mb-4">
             <span className="text-xl font-bold text-grade-a">A</span>
           </div>
           <h3 className="text-lg font-semibold mb-2">Safe & Natural</h3>
           <p className="text-muted-foreground">Natural ingredients with minimal processing and no harmful additives.</p>
+        </div>
+        
+        <div className="glass rounded-xl p-6 flex flex-col items-center text-center shadow-lg dark:shadow-none transition-transform hover:scale-[1.02] duration-300">
+          <div className="w-12 h-12 rounded-full bg-grade-b/10 flex items-center justify-center mb-4">
+            <span className="text-xl font-bold text-grade-b">B</span>
+          </div>
+          <h3 className="text-lg font-semibold mb-2">Moderate Risk</h3>
+          <p className="text-muted-foreground">Generally safe ingredients with some processing or minor concerns.</p>
         </div>
         
         <div className="glass rounded-xl p-6 flex flex-col items-center text-center shadow-lg dark:shadow-none transition-transform hover:scale-[1.02] duration-300">

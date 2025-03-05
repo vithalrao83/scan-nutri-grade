@@ -2,10 +2,10 @@
 // This is a simulated scanner utility for demonstration purposes
 // In a real application, you would use a library like QuaggaJS or the browser's BarcodeDetector API
 
-// Simulate barcode scanning
+// Simulate barcode scanning with a higher success rate
 export const simulateScan = (): Promise<string> => {
-  // Simulate success rate of 80%
-  const success = Math.random() <= 0.8;
+  // Increase success rate to 95%
+  const success = Math.random() <= 0.95;
   
   return new Promise((resolve, reject) => {
     if (success) {
