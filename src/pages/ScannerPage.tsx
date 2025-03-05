@@ -1,16 +1,16 @@
 
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
+import Scanner from "@/components/Scanner";
 import Footer from "@/components/Footer";
 
-const Index = () => {
+const ScannerPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <Hero />
+      <Scanner />
       <Footer />
     </div>
   );
 };
 
-export default Index;
+export default ScannerPage;
